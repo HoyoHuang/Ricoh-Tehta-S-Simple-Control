@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <style>
+        pre{
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        URL = 'http://192.168.1.1';
+    </script>
+</head>
+<body>
+
+<pre id="idMessage" ></pre>
+
+<a href="javascript:info()" class="btn btn-primary">info</a>
+<a href="javascript:state()" class="btn btn-primary">state</a>
+<a href="javascript:startSession()" class="btn btn-primary">startSession</a>
+<a href="javascript:getOptions()" class="btn btn-primary">getOptions - </a>
+<a href="javascript:exec()" class="btn btn-primary">exec</a>
+<a href="javascript:takePicture()" class="btn btn-primary">takePicture</a>
+<a href="javascript:stop()" class="btn btn-primary">stop</a>
+<a href="javascript:status()" class="btn btn-primary">status</a>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+    function info() {
+        $.ajax({
+            url: URL +'/osc/info',
+            dataType: 'binary',
+            type: 'get',
+            complete: function(Json){
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+    function state() {
+        $.ajax({
+            url: URL +'/osc/state',
+            type: 'post',
+            complete: function(Json){
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+    function startSession() {
+        $.ajax({
+            url: URL +'/osc/commands/execute',
+            type: 'post',
+            data:JSON.stringify({
+                name: "camera.startSession"
+            }),
+            complete: function(Json){
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+    function status() {
+        $.ajax({
+            url: URL + '/osc/commands/status',
+            dataType: 'binary',
+            type: 'post',
+            data: {
+                name: 'camera.startSession',
+                parameters: {}
+            },
+            complete: function (J) {
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+    function getOptions() {
+        $.ajax({
+            url: URL + '/osc/commands/execute',
+            type: 'post',
+            data: '{"name":"camera.getOptions","parameters":{"sessionId":"SID_0001","optionNames":["exposureDelay"]}}',
+            complete: function (Json) {
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+    function exec() {
+        $.ajax({
+            url: URL + '/osc/commands/execute',
+            type: 'post',
+            data: JSON.stringify({
+                name:"camera.startSession"
+            }),
+            complete: function (Json) {
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+    function takePicture() {
+        $.ajax({
+            url: URL + '/osc/commands/execute',
+            type: 'post',
+            data: JSON.stringify({
+                name:"camera.setOptions",
+                parameters:{
+                    sessionId:"SID_0001",
+                    options:{
+                        clientVersion:2
+                    }
+                }
+            }),
+            complete: function (Json) {
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+
+        $.ajax({
+            url: URL + '/osc/commands/execute',
+            type: 'post',
+            data: JSON.stringify({
+                name:"camera.setOptions",
+                parameters:{
+                    sessionId:"SID_0001",
+                    options:{
+                        _shutterVolume:0,
+                        captureInterval:8
+                    }
+                }
+            }),
+            complete: function (Json) {
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+
+        $.ajax({
+            url: URL + '/osc/commands/execute',
+            type: 'post',
+            data: JSON.stringify({
+                name:"camera.startCapture"
+            }),
+            complete: function (Json) {
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+    function stop() {
+        $.ajax({
+            url: URL + '/osc/commands/execute',
+            type: 'post',
+            data: JSON.stringify({
+                name:"camera.stopCapture"
+            }),
+            complete: function (Json) {
+                $('#idMessage').html(JSON.stringify(Json, null, 4));
+            }
+        });
+    }
+
+
+//    $.post(URL +'/osc/info', {name:'startSession', parameters:{}}, function( k, v ){
+//        console.log(v);
+//    });
+</script>
+</body>
+</html>
