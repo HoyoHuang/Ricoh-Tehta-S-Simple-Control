@@ -1,4 +1,4 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://hoyo.idv.tw" id="com.hoyo.RTSSC" version="1.0.1">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://hoyo.idv.tw" id="com.hoyo.RTSSC" version="1.1.0">
   <name>Ricoh-Tehta-S-Simple-Control</name>
   <description>Ricoh-Tehta-S-Simple-Control.</description>
   <author href="http://hoyo.idv.tw" email="pc@hoyo.idv.tw">hoyo</author>
